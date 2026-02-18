@@ -162,14 +162,19 @@ html {
   background-color: #ebebeb;
 }
 
-.language-mermaid {
+/* 防止闪烁 */
+pre:has(> code.language-mermaid) {
+  display: none; /* 渲染前隐藏原始代码 */
+}
+
+.mermaid {
   display: flex;
   justify-content: center;
   background-color: #fff;
 }
 
-.language-mermaid svg {
-  max-height: 50vh;
+.mermaid svg {
+  height: 50vh;
 }
 
 .prose code::before {

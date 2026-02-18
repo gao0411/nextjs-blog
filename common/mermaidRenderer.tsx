@@ -6,15 +6,15 @@ import { useEffect } from 'react';
 // 修复循环引用的补丁
 const applyMermaidPatch = () => {
   if (typeof window === 'undefined') return;
-  
+
   // 保存原始方法
   const originalStringify = JSON.stringify;
-  
+
   // 安全版的stringify
-  JSON.stringify = function(value, replacer, space) {
+  JSON.stringify = function (value, replacer, space) {
     const seen = new WeakSet();
-    
-    const safeReplacer = replacer || function(key, val) {
+
+    const safeReplacer = replacer || function (key, val) {
       if (typeof val === 'object' && val !== null) {
         if (seen.has(val)) {
           return '[Circular]';
@@ -23,7 +23,7 @@ const applyMermaidPatch = () => {
       }
       return val;
     };
-    
+
     // 适用类型断言告诉ts我这里的参数就是你要的类型
     return originalStringify.call(this, value, safeReplacer as (string | number)[] | null | undefined, space);
   };
@@ -31,7 +31,7 @@ const applyMermaidPatch = () => {
 
 export function MermaidRenderer() {
   useEffect(() => {
-    
+
     // 应用补丁
     applyMermaidPatch();
 
@@ -43,10 +43,15 @@ export function MermaidRenderer() {
           securityLevel: 'loose', // 允许内联脚本
         });
 
-        // 渲染所有 .mermaid 元素
-        mermaid.default.run({
-          querySelector: "pre code.language-mermaid"
+        // 查找所有 language-mermaid 代码块
+        document.querySelectorAll('pre code.language-mermaid').forEach((block) => {
+          const pre = block!;
+          pre.className = 'mermaid'; // 替换为 <code class="mermaid">
+          pre.textContent = block.textContent;
         });
+
+        // 渲染所有 .mermaid 元素
+        mermaid.default.run();
       })
       .catch(console.error);
   }, []);
