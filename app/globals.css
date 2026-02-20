@@ -184,3 +184,20 @@ pre:has(> code.language-mermaid) {
 .prose code::after {
   content: "";
 }
+
+
+/* 使用 CSS 关键帧动画，无需 JS 触发 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auto-animate {
+  animation: fadeInUp 1.5s ease-out forwards;
+}

@@ -32,7 +32,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex-auto justify-items-center content-center">
+    <div className="flex-auto justify-items-center content-center auto-animate">
       <div className="w-2xl px-4 pt-12">
         {/* Hero Section */}
         <header className="py-8 text-left">
