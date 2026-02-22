@@ -32,7 +32,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex-auto justify-items-center content-center auto-animate">
+    <div className="flex-auto justify-items-center content-center">
       <div className="w-2xl px-4 pt-12">
         {/* Hero Section */}
         <header className="py-8 text-left">
@@ -43,7 +43,7 @@ export default function Home() {
         </header>
       </div>
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-12 w-2xl">
+      <main className="container mx-auto px-4 py-12 w-2xl auto-animate">
         {posts.length === 0 ? (
           <p className="text-center text-gray-500">暂无文章</p>
         ) : (
