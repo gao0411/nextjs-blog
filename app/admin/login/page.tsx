@@ -22,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useAuth } from "../../hooks/use-auth"
 import { useRouter } from "next/navigation"
-
+import { useEffect } from "react"
 const formSchema = z.object({
     username: z
         .string()
@@ -43,24 +43,33 @@ const LoginForm: React.FC = () => {
         },
     })
 
-    const { login } = useAuth();
+    const { login, isAuthenticated } = useAuth();
+
+    useEffect(() => {
+        // 在组件加载时检查用户是否已经登录
+        // 如果已经登录，重定向到管理员页面
+        if (isAuthenticated) {
+            router.push("/admin/dashboard");
+        }
+    }, [isAuthenticated]);
+
     const router = useRouter();
 
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        try{
+        try {
             console.log("登录数据:", data);
-            const res=await login(data);
+            const res = await login(data);
             console.log("登录结果:", res);
-            if(res.success){
+            if (res.success) {
                 // 登录成功，重定向到管理员页面
                 router.push("/admin/dashboard");
-            }else{
+            } else {
                 // 登录失败，显示错误消息
-                if(res.status===401){
+                if (res.status === 401) {
                     form.setError("password", { message: res.error || "用户名或密码错误" });
                 }
             }
-        }catch(error){
+        } catch (error) {
             console.error("登录失败:", error);
         }
     }

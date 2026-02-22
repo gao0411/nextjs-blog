@@ -8,7 +8,7 @@ import { cookies } from "next/headers";
 const ADMIN_USER = {
   id: "1",
   username: process.env.ADMIN_USERNAME || "",
-  // 密码应该使用 bcrypt 加密后存储
+  // 密码使用 bcrypt 加密后存储
   passwordHash: process.env.ADMIN_PASSWORD_HASH || "",
   role: "admin" as const,
 };

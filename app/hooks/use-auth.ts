@@ -12,7 +12,6 @@ interface User {
 
 interface AuthState {
   user: User | null;
-  isLoading: boolean;
   isAuthenticated: boolean;
 }
 
@@ -25,15 +24,12 @@ export function useAuth() {
   const router = useRouter();
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
-    isLoading: true,
     isAuthenticated: false,
   });
 
   // 检查登录状态
-  const checkAuth = useCallback(async () => {
+  const checkAuth = async () => {
     try {
-      setAuthState((prev) => ({ ...prev, isLoading: true }));
-
       const response = await fetch("/api/auth/login", {
         method: "GET",
         headers: {
@@ -46,13 +42,11 @@ export function useAuth() {
         setAuthState({
           user: data.user || null,
           isAuthenticated: data.isAuthenticated || false,
-          isLoading: false,
         });
       } else {
         setAuthState({
           user: null,
           isAuthenticated: false,
-          isLoading: false,
         });
       }
     } catch (error) {
@@ -60,10 +54,9 @@ export function useAuth() {
       setAuthState({
         user: null,
         isAuthenticated: false,
-        isLoading: false,
       });
     }
-  }, []);
+  };
 
   // 登录
   const login = async (credentials: LoginCredentials) => {
@@ -81,7 +74,6 @@ export function useAuth() {
       if (response.ok) {
         // 重新检查认证状态
         await checkAuth();
-        console.log("登录成功:", data);
         return data;
       } else {
         if (response.status === 401) {
@@ -115,7 +107,6 @@ export function useAuth() {
         setAuthState({
           user: null,
           isAuthenticated: false,
-          isLoading: false,
         });
         router.push("/login");
         return { success: true };
@@ -137,7 +128,7 @@ export function useAuth() {
   // 初始化时检查登录状态
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+  }, []);
 
   return {
     ...authState,
