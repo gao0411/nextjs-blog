@@ -70,3 +70,51 @@ export function getAbout() {
     ...data,
   } as PostMetadata;
 }
+
+// posts 按年月分组
+const groupedPosts = (posts: PostMetadata[]) =>
+  posts.reduce(
+    (acc, post) => {
+      // 确保 date 是 Date 对象
+      const date = new Date(post.date);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, "0"); // getMonth() 返回 0-11
+      const key = `${year}-${month}`; // 如 "2026-03"
+
+      if (!acc[key]) {
+        acc[key] = { year, month, posts: [] };
+      }
+      acc[key].posts.push(post);
+      return acc;
+    },
+    {} as Record<string, { year: number; month: string; posts: typeof posts }>,
+  );
+
+// 按月份将groupedPosts转为数组并按时间倒序（最新在前）
+const groups = (grouped: Record<string, any>) => Object.values(grouped).sort((a, b) => {
+  return (
+    new Date(b.year, Number(b.month) - 1).getTime() -
+    new Date(a.year, Number(a.month) - 1).getTime()
+  );
+});
+
+// 获取英文月份名称
+const getMonthNameFromStr = (monthStr: string): string => {
+  const monthNum = parseInt(monthStr, 10);
+  if (isNaN(monthNum) || monthNum < 1 || monthNum > 12) {
+    throw new Error("Invalid month");
+  }
+  return new Date(2024, monthNum - 1).toLocaleString("en-US", {
+    month: "short",
+  });
+};
+
+export const postsByMonth = () => {
+  const posts = getAllPost();
+  const grouped = groupedPosts(posts);
+  const groupsArr = groups(grouped);
+  return groupsArr.map((group) => ({
+    ...group,
+    monthName: getMonthNameFromStr(group.month),
+  }));
+};
