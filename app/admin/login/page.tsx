@@ -49,7 +49,7 @@ const LoginForm: React.FC = () => {
         // 在组件加载时检查用户是否已经登录
         // 如果已经登录，重定向到管理员页面
         if (isAuthenticated) {
-            router.push("/admin/dashboard");
+            router.push("/");
         }
     }, [isAuthenticated]);
 

@@ -1,6 +1,7 @@
 import { formatDate } from "@/app/lib/utils";
 import type { PostMetadata } from "@/app/lib/posts";
 import Link from "next/link";
+import AuthedButtonGroup from "@/common/authedButtonGroup";
 
 export default function PostCard({ post }: Readonly<{ post: PostMetadata }>) {
   return (
@@ -15,8 +16,8 @@ export default function PostCard({ post }: Readonly<{ post: PostMetadata }>) {
         <time className="p-0 text-base opacity-[0.5] cursor-pointer">
           {formatDate(post.date)}
         </time>
+        <AuthedButtonGroup />
       </div>
     </article>
-
   );
 }
