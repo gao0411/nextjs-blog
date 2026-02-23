@@ -41,7 +41,7 @@ export default function Home() {
         )
         }
       </main >
-      <About></About>
+      <About />
       <NewBlog />
     </div >
   );

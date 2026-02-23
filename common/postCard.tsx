@@ -16,7 +16,7 @@ export default function PostCard({ post }: Readonly<{ post: PostMetadata }>) {
         <time className="p-0 text-base opacity-[0.5] cursor-pointer">
           {formatDate(post.date)}
         </time>
-        <AuthedButtonGroup />
+        <AuthedButtonGroup slug={post.slug}/>
       </div>
     </article>
   );
