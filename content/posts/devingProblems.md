@@ -6,6 +6,7 @@ tags: ["dev", "problem"]
 ---
 
 canvas的指针事件问题：此问题来源于在使用canvas做背景动画时，设置z-index后导致canvas上的事件无法触发，原因是point-events仅能触发一个元素，无法同时触发多个元素，所以解决办法就是在需要触发的元素上设置point-events-auto，在不需要触发的元素上设置point-events-none，使得canvas能够触发hover事件 
+
 **经过大量查阅资料发现，浏览器的指针事件默认只派发给最上层可交互元素，也就是多个元素重叠，仅有最上层可交互元素能接收，其他元素接收不到。基于以上信息，原方案不是最优解，最优解是全局监听事件，因为canvas上的事件无法触发，window上的事件必定会触发，在tsparticles库可以将tsparticles中的option.interactive.detectOn设置为window，启用全局监听即可触发指针事件，并且这种方案是心智负担最小的方案** 
 
 而且需要注意的是，规范中说这个命中测试并没有一份正式的文件，所以在不同浏览器中这个问题的行为结果可能也不同
@@ -31,5 +32,9 @@ mermaid渲染问题：在渲染md文件中的mermaid图表时遇到了一些问�
  - 查找发现body上有个overflow:hidden的属性，暂时不知从哪里来的
  - 经过查找，发现是在显示drawer组件时会在body属性上添加overflow:hidden的属性，但是在关闭组件时这个属性没有被清理，导致无法显示滚动条
  - todo：从源码层面修复这个bug
+ - 找到源码，发现是在Drawer组件与MDEditor组件一起使用时overflow属性设置的问题。
+  - Drawer组件在useEffect中进行了初始时设置overflow:hidden，离开时清除的操作（通过属性选择器实现的）
+  - MDEditor组件在useEffect中获取了当前的overflow值并设置，但是离开时没有进行清除操作
+  - 通过创建一个MDEditorWrapper组件包裹MDEditor组件，并在useEffect中实现清除解决这个问题
 
 

@@ -18,7 +18,7 @@ export default async function PostPage({ params }: PostPageProps) {
     const contentHtml = await markdownToHtml(post.content || "");
 
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center bg-gray-100 dark:bg-gray-900">
             <div className="p-8 my-16 w-full max-w-3xl">
                 <header className="mb-8">
                     <h1 className="text-4xl font-bold pb-4">{post.title}</h1>

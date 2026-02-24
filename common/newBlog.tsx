@@ -5,7 +5,7 @@ import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Drawer, DrawerContent, DrawerTitle, DrawerFooter } from "@/components/ui/drawer";
-import MDEditor from '@uiw/react-md-editor';
+import MDEditorWrapper from "./MDEditorWrapper";
 import { useState } from "react";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Input } from "@/components/ui/input";
@@ -28,7 +28,6 @@ export default function NewBlog() {
     }
 
     const onClose = () => {
-        document.body.style.overflow = 'auto';
         setIsOpen(false);
     }
 
@@ -59,15 +58,7 @@ export default function NewBlog() {
             <Drawer open={isOpen} onOpenChange={onClose}>
                 <DrawerContent>
                     <DrawerTitle></DrawerTitle>
-                    <div className="flex flex-col h-full">
-                        <MDEditor
-                            value={rawContent || ""}
-                            onChange={(value) => {
-                                setRawContent(value || "");
-                            }}
-                            className='flex-1 m-4'
-                        />
-                    </div>
+                    <MDEditorWrapper rawContent={rawContent} setRawContent={setRawContent} />
                     <DrawerFooter className='fixed bottom-2 right-2 flex flex-row'>
                         <Input placeholder="输入文件名称" value={fileName} onChange={(e) => setFileName(e.target.value)} />
                         <ButtonGroup>

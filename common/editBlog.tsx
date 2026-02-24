@@ -1,5 +1,5 @@
 "use client"
-import MDEditor from '@uiw/react-md-editor';
+import MDEditorWrapper from "./MDEditorWrapper";
 import { getPostRawContent, savePostContent } from "@/app/lib/editPosts";
 import { useState, useEffect } from "react";
 import {
@@ -23,11 +23,6 @@ export default function EditBlog({ slug, isOpen, onClose }: EditBlogProps) {
         if (isOpen && slug) {
             loadingContent();
         }
-
-        // 返回清理函数 - 关闭时恢复
-        return () => {
-            document.body.style.overflow = 'auto';
-        };
     }, [isOpen, slug])
 
     const loadingContent = async () => {
@@ -44,15 +39,7 @@ export default function EditBlog({ slug, isOpen, onClose }: EditBlogProps) {
         <Drawer open={isOpen} onOpenChange={onClose}>
             <DrawerContent>
                 <DrawerTitle></DrawerTitle>
-                <div className="flex flex-col h-full">
-                    <MDEditor
-                        value={rawContent || ""}
-                        onChange={(value) => {
-                            setRawContent(value || "");
-                        }}
-                        className='flex-1 m-4'
-                    />
-                </div>
+                <MDEditorWrapper rawContent={rawContent} setRawContent={setRawContent} />
                 <DrawerFooter className='fixed bottom-2 right-2'>
                     <ButtonGroup>
                         <Button variant="outline" onClick={onClose} className='flex-auto'>取消</Button>
