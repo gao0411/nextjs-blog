@@ -32,9 +32,10 @@ mermaid渲染问题：在渲染md文件中的mermaid图表时遇到了一些问�
  - 查找发现body上有个overflow:hidden的属性，暂时不知从哪里来的
  - 经过查找，发现是在显示drawer组件时会在body属性上添加overflow:hidden的属性，但是在关闭组件时这个属性没有被清理，导致无法显示滚动条
  - todo：从源码层面修复这个bug
- - 找到源码，发现是在Drawer组件与MDEditor组件一起使用时overflow属性设置的问题。
+ - 找到源码，发现是在Drawer组件与MDEditor组件一起使用时overflow属性设置的问题。本质上是MDEditor组件引起的
   - Drawer组件在useEffect中进行了初始时设置overflow:hidden，离开时清除的操作（通过属性选择器实现的）
   - MDEditor组件在useEffect中获取了当前的overflow值并设置，但是离开时没有进行清除操作
   - 通过创建一个MDEditorWrapper组件包裹MDEditor组件，并在useEffect中实现清除解决这个问题
+ - 这个问题给我一个提醒，在后续的开发工作中，可能会引入类似的问题，包括在进行代码重构时三方库的实现对我们来说是未知的（我们更多情况时只会考虑如何使用，很少关注实现），所以重构时要明确代码可能会影响的点
 
 
