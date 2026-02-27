@@ -32,7 +32,7 @@ export default function ParticlesContainer() {
                 },
             },
             number: {
-                value: 60,
+                value: 30,
             },
             color: {
                 value: "#bdbdbd"
